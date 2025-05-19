@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import PostForm
 
+# View for creating a new blog post
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -14,38 +15,40 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'blog.add_post'
 
     def form_valid(self, form):
+        # Set the author to the current user before saving
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+# View for updating an existing blog post
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
     permission_required = 'blog.change_post'
     permission_denied_message = 'You do not have permission to edit this post.'
+
     def get_success_url(self):
         # Redirect to the post detail page after successful update
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.object.pk})
     
-    # Define the test for UserPassesTestMixin (object-level permission)
+    # Only allow the author to update the post
     def test_func(self):
-        # Get the post object being viewed/edited
         post = self.get_object()
-        # Return True if the logged-in user is the author of the post
         return self.request.user == post.author
 
+# View for deleting a blog post
 class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blog:post_list')
     permission_required = 'blog.delete_post'
 
+    # Only allow the author to delete the post
     def test_func(self):
-        # Get the post object being viewed for deletion
         post = self.get_object()
-        # Return True if the logged-in user is the author of the post
         return self.request.user == post.author
 
+# View for updating a comment
 class CommentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     fields = ['content']
@@ -57,12 +60,12 @@ class CommentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesT
         # Redirect to the post detail page after successful update
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.object.post.pk})
 
+    # Only allow the author to update the comment
     def test_func(self):
-        # Get the comment object being viewed/edited
         comment = self.get_object()
-        # Return True if the logged-in user is the author of the comment
         return self.request.user == comment.author
 
+# View for deleting a comment
 class CommentDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/comment_confirm_delete.html'
@@ -73,12 +76,12 @@ class CommentDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesT
         # Redirect to the post detail page after successful deletion
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.object.post.pk})
     
+    # Only allow the author to delete the comment
     def test_func(self):
-        # Get the comment object being viewed for deletion
         comment = self.get_object()
-        # Return True if the logged-in user is the author of the comment
         return self.request.user == comment.author
 
+# View for creating a new comment
 class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Comment
     fields = ['content']
@@ -88,23 +91,28 @@ class CommentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     def get_success_url(self):
         # Redirect to the post detail page after successful creation
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.kwargs['post_pk']})
+
     def form_valid(self, form):
         # Set the post for the comment
         form.instance.post_id = self.kwargs['post_pk']
         # Set the author of the comment
         form.instance.author = self.request.user
         return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
+        # Add the related post to the context for use in the template
         context = super().get_context_data(**kwargs)
         context['post'] = Post.objects.get(pk=self.kwargs['post_pk'])
         return context
 
+# View for listing all blog posts
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    paginate_by = 10
+    paginate_by = 10  # Show 10 posts per page
 
+# View for displaying a single blog post and its comments
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
