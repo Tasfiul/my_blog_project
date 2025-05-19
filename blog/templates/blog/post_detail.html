@@ -1,0 +1,32 @@
+{# my_blog_project/blog/templates/blog/post_detail.html #}
+{% extends 'blog/base.html' %} {# Inherit from the base template #}
+
+{% block title %}{{ post.title }}{% endblock %} {# Set the title to the post title #}
+
+{% block content %} {# Fill the content block #}
+    <article class="post">
+        <h2>{{ post.title }}</h2>
+        <p class="post-meta">Published by {{ post.author.username }} on {{ post.pub_date|date:"F d, Y" }}</p>
+        <div>
+            {{ post.content|linebreaksbr }} {# Display content, preserving line breaks #}
+        </div>
+    </article>
+
+    <section class="comments">
+        <h3>Comments ({{ post.comments.count }})</h3> {# Display the number of comments #}
+
+        {% if post.comments.all %} {# Check if there are any comments #}
+            {% for comment in post.comments.all %} {# Loop through comments related to this post #}
+                <div class="comment">
+                    <p>{{ comment.content }}</p>
+                    <p class="comment-meta">by {{ comment.author.username }} on {{ comment.created_date|date:"F d, Y H:i" }}</p> {# Display comment author and date/time #}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p> {# Message if there are no comments #}
+        {% endif %}
+
+        {# Add a form for adding new comments later... #}
+
+    </section>
+{% endblock %}

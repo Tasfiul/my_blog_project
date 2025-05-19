@@ -1,0 +1,40 @@
+{# my_blog_project/blog/templates/blog/base.html #}
+{% load static %} {# Load static files tags #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Blog{% endblock %}</title> {# Define a block for the page title #}
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}"> {# Link to blog-specific CSS (create this next!) #}
+    {# You might also include project-wide CSS or frameworks here #}
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'blog:post_list' %}">My Awesome Blog</a></h1> {# Link back to the blog list #}
+        <div style="text-align: right;"> {# Basic styling for auth links #}
+            {% if user.is_authenticated %}
+                Hello, {{ user.username }}.
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: #0057e7; cursor: pointer; padding: 0; font-size: 1em; text-decoration: underline;">
+                        Log Out
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Log In</a> |
+                {# Optional: Link to a registration page if you add one #}
+                {# <a href="{% url 'register' %}">Sign Up</a> #}
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        {% block content %} {# This is the main content block that child templates will fill #}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 My Awesome Blog</p> {# Simple footer #}
+    </footer>
+
+</body>
+</html>

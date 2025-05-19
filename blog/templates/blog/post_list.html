@@ -1,0 +1,20 @@
+{# my_blog_project/blog/templates/blog/post_list.html #}
+{% extends 'blog/base.html' %} {# Inherit from the base template #}
+
+{% block title %}Latest Blog Posts{% endblock %} {# Override the title block #}
+
+{% block content %} {# Fill the content block #}
+    <h2>Latest Blog Posts</h2>
+
+    {% if posts %} {# Check if the 'posts' list (from the view) is not empty #}
+        {% for post in posts %} {# Loop through each post in the 'posts' list #}
+            <article class="post"> {# Use an article tag for semantic HTML #}
+                <h2><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2> {# Link to the post detail page #}
+                <p class="post-meta">Published by {{ post.author.username }} on {{ post.pub_date|date:"F d, Y" }}</p> {# Display author and formatted date #}
+                <p>{{ post.content|truncatechars:200 }} <a href="{% url 'blog:post_detail' post.pk %}">Read more</a></p> {# Display truncated content and a read more link #}
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No blog posts found.</p> {# Message if there are no posts #}
+    {% endif %}
+{% endblock %}
