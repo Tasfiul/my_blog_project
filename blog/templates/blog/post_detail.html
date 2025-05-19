@@ -20,12 +20,28 @@
                 <div class="comment">
                     <p>{{ comment.content }}</p>
                     <p class="comment-meta">by {{ comment.author.username }} on {{ comment.created_date|date:"F d, Y H:i" }}</p> {# Display comment author and date/time #}
+                    
+                    {# Check if the user is the author of the comment #}
+                    {% if user.is_authenticated and user.username == comment.author %}
+                        <a href="{% url 'blog:comment_edit' comment.pk %}">Edit</a> {# Link to edit the comment #}
+                        <a href="{% url 'blog:comment_delete' comment.pk %}">Delete</a> {# Link to delete the comment #}
+                    {% endif %}
+                
                 </div>
             {% endfor %}
         {% else %}
             <p>No comments yet.</p> {# Message if there are no comments #}
         {% endif %}
-
+                {% if user.is_authenticated %}
+                    <h4>Add a new comment</h4>
+                    <form action="{% url 'blog:comment_create' post.pk %}" method="post">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit">Post Comment</button>
+                    </form>
+                {% else %}
+                    <p><a href="{% url 'login' %}">Log in</a> to add a comment.</p>
+                {% endif %}
         {# Add a form for adding new comments later... #}
 
     </section>
