@@ -1,14 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils import timezone
+from tinymce.models import HTMLField
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    content = models.TextField()
+    content = HTMLField()
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
 
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    
+    def publish(self):
+        self.pub_date = timezone.now()
+        self.save()
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', kwargs={'pk': self.pk})
+    def get_update_url(self):
+        return reverse('blog:post_update', kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['pub_date']
+        permissions = [
+            ("can_publish", "Can publish posts"),
+            ("can_unpublish", "Can unpublish posts"),
+        ]
 
     def __str__(self):
         return self.title

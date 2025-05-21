@@ -1,18 +1,20 @@
-{# my_blog_project/blog/templates/blog/post_form.html #}
-{% extends 'blog/base.html' %} {# Inherit from the base template #}
+{% extends 'blog/base.html' %}
 
-{% block title %}Create New Post{% endblock %} {# Set the title #}
+{% block title %}Create Post{% endblock %}
 
-{% block content %} {# Fill the content block #}
-    <h2>Create New Post</h2>
+{% block content %}
+    {% if form.instance.pk %}
+        <h2>Edit Post</h2>
+    {% else %}
+        <h2>Write Post</h2>
+    {% endif %}
+    {{ form.media }}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <form method="post"> {# Action defaults to the current URL (post/new/) #}
-        {% csrf_token %} {# Essential security tag #}
-
-        {# Render the form fields (title and content) #}
         {{ form.as_p }}
 
         <button type="submit">Save Post</button>
+        <a href="{% url 'blog:post_list' %}">Cancel</a>
     </form>
-
 {% endblock %}

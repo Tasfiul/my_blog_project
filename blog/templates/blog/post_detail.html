@@ -6,10 +6,16 @@
 {% block content %} {# Fill the content block #}
     <article class="post">
         <h2>{{ post.title }}</h2>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image" style="max-width: 100%; height: auto; display: block; margin-bottom: 20px;">
+        {% endif %}
         <p class="post-meta">Published by {{ post.author.username }} on {{ post.pub_date|date:"F d, Y" }}</p>
         <div>
-            {{ post.content|linebreaksbr }} {# Display content, preserving line breaks #}
+            {{ post.content|safe }} {# Render HTML content from TinyMCE safely #}
         </div>
+        {% if user.is_authenticated and user == post.author %}
+            <a href="{% url 'blog:post_edit' post.pk %}">Edit Post</a>
+        {% endif %}
     </article>
 
     <section class="comments">
@@ -18,7 +24,7 @@
         {% if post.comments.all %} {# Check if there are any comments #}
             {% for comment in post.comments.all %} {# Loop through comments related to this post #}
                 <div class="comment">
-                    <p>{{ comment.content }}</p>
+                    <p>{{ comment.content|safe }}</p> {# Render HTML content from TinyMCE safely #}
                     <p class="comment-meta">by {{ comment.author.username }} on {{ comment.created_date|date:"F d, Y H:i" }}</p> {# Display comment author and date/time #}
                     
                     {# Check if the user is the author of the comment #}

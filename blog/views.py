@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import PostForm
+from django.db.models import Q # Import Q object for complex queries
 
 # View for creating a new blog post
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -111,6 +112,16 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     paginate_by = 10  # Show 10 posts per page
+    ordering = ['pub_date']  # Order by creation date, newest first
+    # Filter posts based on search query
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(content__icontains=query)
+            )
+        return queryset
 
 # View for displaying a single blog post and its comments
 class PostDetailView(DetailView):
