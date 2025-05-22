@@ -1,11 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import PostForm
+
+from django.views import generic
 from django.db.models import Q # Import Q object for complex queries
+from taggit.models import Tag # <--- ADD THIS IMPORT for Tag model
+
 
 # View for creating a new blog post
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -129,3 +133,49 @@ class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
+# New Class-Based View for listing posts by tag
+class TaggedPostListView(PostListView): # Inherit from PostListView
+    def get_queryset(self):
+        # Get the tag slug from the URL (defined in urls.py as <slug:tag_slug>)
+        tag_slug = self.kwargs.get('tag_slug')
+
+        if tag_slug:
+            # Filter posts that have this tag.
+            # `filter(tags__slug=tag_slug)` is how taggit filters by slug.
+            queryset = Post.objects.filter(tags__slug=tag_slug).order_by('pub_date')
+        else:
+            # Fallback to the default PostListView queryset if no tag slug is provided
+            queryset = super().get_queryset()
+
+        # IMPORTANT: Re-apply the search filter if a query exists,
+        # as this view can also handle search on filtered tags
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(content__icontains=query) # Use 'content' or 'text'
+            ).distinct()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag_slug = self.kwargs.get('tag_slug')
+        if tag_slug:
+            # Add the current tag object to the context.
+            # This allows you to display the tag name (e.g., "Posts tagged with 'Python'")
+            context['current_tag'] = get_object_or_404(Tag, slug=tag_slug)
+            context['title'] = f"Posts tagged with '{context['current_tag'].name}'"
+        else:
+            context['title'] = "All Blog Posts" # Default title if no tag is active
+        return context
+    
+
+# New: User Dashboard View
+class UserDashboardView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'blog/user_dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['user_posts'] = Post.objects.filter(author=user).order_by('pub_date')
+        context['user_comments'] = Comment.objects.filter(author=user).order_by('created_date')
+        return context

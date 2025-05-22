@@ -3,10 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}My Blog{% endblock %}</title> {# Define a block for the page title #}
-    <link rel="stylesheet" href="{% static 'blog/style.css' %}"> {# Link to blog-specific CSS (create this next!) #}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django Blog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}"> {# Link to your CSS file #}
     {# You might also include project-wide CSS or frameworks here #}
-    
+        {% block extra_head %}{% endblock %}
+        
 </head>
 <body>
     <header>
@@ -36,6 +39,9 @@
             <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q|default_if_none:'' }}" required>
             <button type="submit">Search</button>
         </form>
+        {% if user.is_authenticated %}
+            <a href="{% url 'blog:user_dashboard' %}">My Dashboard</a>
+        {% endif %}
 
         </nav>
     </header>

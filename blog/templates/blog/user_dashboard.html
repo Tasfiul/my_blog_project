@@ -1,0 +1,45 @@
+{# my_blog_project/blog/templates/blog/user_dashboard.html #}
+{% extends 'blog/base.html' %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+    <h2>{{ user.username }}'s Dashboard</h2>
+
+    <section class="dashboard-posts">
+        <h3>My Posts</h3>
+        {% if user_posts %}
+            <ul>
+                {% for post in user_posts %}
+                    <li>
+                        <a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a>
+                        - <small>({{ post.pub_date|date:"F d, Y" }})</small>
+                        <a href="{% url 'blog:post_edit' post.pk %}" class="edit-link">Edit</a>
+                        <a href="{% url 'blog:post_delete' post.pk %}" class="delete-link">Delete</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't created any posts yet. <a href="{% url 'blog:post_create' %}">Write your first post!</a></p>
+        {% endif %}
+    </section>
+
+    <section class="dashboard-comments">
+        <h3>My Comments</h3>
+        {% if user_comments %}
+            <ul>
+                {% for comment in user_comments %}
+                    <li>
+                        On <a href="{% url 'blog:post_detail' comment.post.pk %}">{{ comment.post.title }}</a>: "{{ comment.text|truncatechars:50 }}"
+                        - <small>({{ comment.created_date|date:"F d, Y" }})</small>
+                        <a href="{% url 'blog:comment_edit' comment.pk %}" class="edit-link">Edit</a>
+                        <a href="{% url 'blog:comment_delete' comment.pk %}" class="delete-link">Delete</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't left any comments yet.</p>
+        {% endif %}
+    </section>
+
+{% endblock %}

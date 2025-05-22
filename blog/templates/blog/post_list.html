@@ -11,6 +11,16 @@
             <article class="post"> {# Use an article tag for semantic HTML #}
                 <h2><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2> {# Link to the post detail page #}
                 <p class="post-meta">Published by {{ post.author.username }} on {{ post.pub_date|date:"F d, Y" }}</p> {# Display author and formatted date #}
+                {# Display Tags here on list page (optional) #}
+            {% if post.tags.all %}
+                <div class="post-tags-list">
+                    Tags:
+                    {% for tag in post.tags.all %}
+                        {# We will create the 'blog:posts_by_tag' URL in the next steps #}
+                        <a href="{% url 'blog:posts_by_tag' tag.slug %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
                 <p>{{ post.content|safe }} <a href="{% url 'blog:post_detail' post.pk %}">Read more</a></p> {# Display truncated content and a read more link #}
             </article>
         {% endfor %}
