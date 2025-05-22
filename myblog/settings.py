@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com'] # Add both with and without www
+ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com', '127.0.0.1', 'localhost'] # Add both with and without www
 
 
 # Application definition
