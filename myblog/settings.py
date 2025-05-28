@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com', '127.0.0.1', 'localhost'] # Add both with and without www
+ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com'] # Add both with and without www
 
 
 # Application definition
@@ -43,6 +42,13 @@ INSTALLED_APPS = [
     'tinymce',
     'taggit',
     'django.contrib.sitemaps',
+    'users',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_bootstrap5',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +57,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -105,22 +114,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 TINYMCE_DEFAULT_CONFIG = {
-    "theme": "silver", # Or "modern" for an older look, "silver" is the current standard
-    "height": 500, # Height of the editor in pixels
-    "menubar": "file edit view insert format tools table help",
-    "plugins": (
-        "advlist autolink lists link image charmap print preview anchor",
-        "searchreplace visualblocks code fullscreen",
-        "insertdatetime media table paste code help wordcount",
-    ),
-    "toolbar": (
-        "undo redo | formatselect | bold italic backcolor | \
-        alignleft aligncenter alignright alignjustify | \
-        bullist numlist outdent indent | removeformat | help"
-    ),
-    "custom_undo_redo_levels": 10,
-    "language": "en_US", # Example: 'es' for Spanish, 'fr_FR' for French
+    'plugins': 'advlist autolink lists link image charmap preview anchor',
+    'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
 }
 
 # Internationalization
@@ -158,3 +155,35 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Custom user model
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key-for-development')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Django Allauth Settings
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_LOGIN_METHODS = {'email','username'} # Users log in with email instead of username
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Users MUST verify email to log in
+ACCOUNT_UNIQUE_EMAIL = True # Enforce unique emails
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True # Confirms email on GET request for simplicity
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3 # How many days the email confirmation link is valid
+
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect after logout
+ACCOUNT_SIGNUP_REDIRECT_URL = 'account_email_verification_sent' # Custom redirect after signup
+ACCOUNT_LOGIN_URL = '/accounts/login/' # Allauth's login URL
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True  # Log out user after password change
+
+# Email settings for Django Allauth
+# Use Gmail's SMTP server for sending emails
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hsherlock422@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'zcmcczmbkwhppvxu'  # Use an App Password (see below)
+DEFAULT_FROM_EMAIL = 'verifier@gmail.com'  # Default sender email address

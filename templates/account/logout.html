@@ -1,0 +1,22 @@
+{# my_blog_project/templates/account/logout.html #}
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %} {# Not strictly necessary for logout, but good for consistency #}
+{% load account %}
+
+{% block title %}Log Out{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2>Log Out</h2>
+    <p>Are you sure you want to log out?</p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button class="btn btn-danger" type="submit">Log Out</button>
+        <a class="btn btn-outline-info" href="{% url 'account_login' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}

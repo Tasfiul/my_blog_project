@@ -1,14 +1,21 @@
+{# blog/templates/blog/comment_confirm_delete.html #}
 {% extends "blog/base.html" %}
 
 {% block content %}
-    <h2>Confirm Delete Comment</h2>
-    <p>Are you sure you want to delete this comment?</p>
-    <div>
-        <strong>{{ object.user }}:</strong> {{ object.text }}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Confirm Delete Comment</legend>
+                <p>Are you sure you want to delete this comment?</p>
+                {# Corrected line 7 to show author and text #}
+                <strong>{{ object.author }}</strong>: {{ object.content }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">Yes, Delete</button>
+                {# Corrected line 12 to pass post's pk as a keyword argument #}
+                <a href="{% url 'blog:post_detail' pk=object.post.pk %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-        <a href="{% url 'comment_list' %}">Cancel</a>
-    </form>
-{% endblock %}
+{% endblock content %}

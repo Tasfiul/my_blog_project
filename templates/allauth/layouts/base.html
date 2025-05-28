@@ -1,0 +1,35 @@
+{# my_blog_project/templates/allauth/layouts/base.html #}
+{% extends "blog/base.html" %}
+{% load account %}
+
+{# This template effectively acts as an intermediary, plugging allauth's content
+   into your main site's base.html. It uses allauth's own 'head_title' and
+   'content' blocks. You can add specific allauth-related styling here
+   if needed, or just pass it through to your main base template. #}
+
+{% block head_title %}
+    {% block allauth_head_title %}{% endblock %} {# allauth-specific head title #}
+{% endblock %}
+
+{% block content %}
+    {# Allauth's content usually appears within this 'content' block. #}
+    {# You might want to wrap it in a div that matches your main content area #}
+    {% block allauth_content %}{% endblock %}
+{% endblock %}
+
+{# You can also override other allauth specific blocks here if they exist in their base #}
+{# For example, allauth includes its messages here, so you might want to show them: #}
+{% block messages %}
+    {# Render allauth messages within your blog's message display system #}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endblock messages %}
+
+{# If you have specific scripts or css that allauth might inject, you can put them here: #}
+{% block extra_body %}
+    {% block allauth_extra_body %}{% endblock %}
+{% endblock %}

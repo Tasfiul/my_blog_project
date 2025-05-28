@@ -10,9 +10,9 @@
     {# Form to confirm deletion via POST #}
     <form method="post">
         {% csrf_token %} {# Essential security tag #}
-        <button type="submit">Confirm Delete</button>
+        <button type="submit" class="btn">Confirm Delete</button>
         {# Optional: Add a cancel link or button #}
-        <a href="{% url 'blog:post_detail' object.pk %}">Cancel</a>
+        <a href="{% url 'blog:post_detail' object.pk %}"class="btn">Cancel</a>
     </form>
 
 {% endblock %}
