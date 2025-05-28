@@ -1,5 +1,6 @@
 {# my_blog_project/blog/templates/blog/base.html #}
 {% load static %} {# Load static files tags #}
+{% load account %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,44 +16,47 @@
     <header>
         <nav>
             <ul>
-                <li><a href="{% url 'blog:post_list' %}">Home</a></li> {# Link to the blog list #}
-                <li><a href="{% url 'blog:post_create' %}">Create Post</a></li> {# Link to create a new post #}
+                <li><a href="{% url 'blog:post_list' %}"class="btn">Home</a></li> {# Link to the blog list #}
+                <li><a href="{% url 'blog:post_create' %}"class="btn">Create Post</a></li> {# Link to create a new post #}
             </ul>
         <h1><a href="{% url 'blog:post_list' %}">My Awesome Blog</a></h1> {# Link back to the blog list #}
-        <div style="text-align: right;"> {# Basic styling for auth links #}
+        <div> {# Basic styling for auth links #}
             {% if user.is_authenticated %}
                 Hello, {{ user.username }}.
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                <form action="{% url 'account_logout' %}" method="post" style="display: inline;">
                     {% csrf_token %}
-                    <button type="submit" style="background: none; border: none; color: #0057e7; cursor: pointer; padding: 0; font-size: 1em; text-decoration: underline;">
+                    <button type="submit" class="btn">
                         Log Out
                     </button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}">Log In</a> |
+                <a href="{% url 'account_login' %}"class="btn">Log In</a> |
                 {# Optional: Link to a registration page if you add one #}
-                {# <a href="{% url 'register' %}">Sign Up</a> #}
+                <a href="{% url 'account_signup' %}"class="btn">Sign Up</a>
                 
             {% endif %}
         </div>
-        <form action="{% url 'blog:post_list' %}" method="get" style="margin-top: 10px;">
-            <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q|default_if_none:'' }}" required>
-            <button type="submit">Search</button>
-        </form>
         {% if user.is_authenticated %}
-            <a href="{% url 'blog:user_dashboard' %}">My Dashboard</a>
+            <a href="{% url 'blog:user_dashboard' %}"class="btn">My Dashboard</a>
         {% endif %}
 
         </nav>
     </header>
 
     <main>
-        {% block content %} {# This is the main content block that child templates will fill #}
-        {% endblock %}
+        {# Allauth provides a way to display messages like "check your email" #}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
-        <p>&copy; 2023 My Awesome Blog</p> {# Simple footer #}
+        <p>&copy; 2025 My Awesome Blog</p> {# Simple footer #}
     </footer>
 
 </body>

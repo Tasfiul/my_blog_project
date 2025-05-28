@@ -1,0 +1,23 @@
+{# my_blog_project/templates/account/login.html #}
+{% extends "allauth/layouts/entrance.html" %}
+{% load crispy_forms_tags %}
+{% load account %} {# Needed for allauth tags #}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2>Log In</h2>
+    <p class="text-muted">You can log in using your username or email address.</p>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+
+        {{ form |crispy }}
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Sign In</button>
+    </form>
+</div>
+{% endblock %}

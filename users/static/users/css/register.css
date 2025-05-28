@@ -1,0 +1,98 @@
+/* register.css - Navy Blue & White Theme */
+
+body {
+    background: linear-gradient(135deg, #0a1833 0%, #101828 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.register-container {
+    max-width: 400px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px rgba(10,24,51,0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+    padding: 36px 32px;
+    border: 2px solid #0a1833;
+}
+
+.register-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 28px;
+    color: #0a1833;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #00000022;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #0a1833;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    border: 2px solid #bfc9db;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    background: #fff;
+    transition: border 0.2s, box-shadow 0.2s;
+    color: #101828;
+}
+
+.register-form input:focus {
+    border-color: #0a1833;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px #bfc9db;
+}
+
+.register-form button[type="submit"] {
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(90deg, #0a1833 60%, #233a5e 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #bfc9db;
+    letter-spacing: 0.5px;
+}
+
+.register-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #101828 60%, #233a5e 100%);
+    box-shadow: 0 4px 16px #bfc9db;
+}
+
+.register-footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 1rem;
+    color: #0a1833;
+}
+
+.register-footer a {
+    color: #233a5e;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid #233a5e;
+    transition: border-bottom 0.2s, color 0.2s;
+}
+
+.register-footer a:hover {
+    color: #0a1833;
+    border-bottom: 2px solid #0a1833;
+    text-decoration: none;
+}

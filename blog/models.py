@@ -11,7 +11,7 @@ class Post(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True, help_text="Add tags to your post. Separate with commas.")
 
     def publish(self):
         self.pub_date = timezone.now()
@@ -23,7 +23,7 @@ class Post(models.Model):
         return reverse('blog:post_update', kwargs={'pk': self.pk})
 
     class Meta:
-        ordering = ['pub_date']
+        ordering = ['-pub_date']
         permissions = [
             ("can_publish", "Can publish posts"),
             ("can_unpublish", "Can unpublish posts"),
@@ -37,9 +37,15 @@ class Comment(models.Model):
     author = models.CharField(max_length=100)
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         ordering = ['created_date']
+        permissions = [
+            ("can_create_comment", "Can create comment"),
+            ("can_edit_comment", "Can edit comment"),
+            ("can_delete_comment", "Can delete comment"),
+        ]
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'

@@ -1,110 +1,305 @@
-/* General Body Styles */
+/* blog/static/blog/css/blog.css */
+
+/* --- Global Styles --- */
+:root {
+    --scarlet: #DC143C; /* Primary accent color */
+    --black: #1a1a1a; /* Dark text and background elements */
+    --white: #f8f8f8; /* Light backgrounds and text on dark elements */
+    --gray-light: #e0e0e0; /* Light borders, subtle backgrounds */
+    --gray-medium: #666666; /* Secondary text, darker borders */
+    --gray-dark: #333333; /* For hover states on light elements */
+    --font-family: 'Inter', sans-serif; /* Modern sans-serif font */
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family);
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--white);
+    color: var(--black);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure footer stays at the bottom */
 }
 
-/* Main Container/Layout */
 main {
+    flex: 1; /* Allows main content to grow and push footer down */
     max-width: 960px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    width: 100%; /* Ensure it takes full width on smaller screens */
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #333;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    color: var(--scarlet);
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
 }
 
 a {
-    color: #007bff;
+    color: var(--scarlet);
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: var(--gray-medium);
 }
 
-/* Header & Navigation */
+p {
+    margin-bottom: 1em;
+}
+
+/* --- Header & Navigation --- */
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+    background-color: var(--black);
+    color: var(--white);
+    padding: 15px 20px;
+    border-bottom: 3px solid var(--scarlet);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 header nav {
-    max-width: 960px;
-    margin: 0 auto;
     display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    max-width: 960px;
+    margin: 0 auto;
 }
 
-header nav a {
-    color: #fff;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease;
-    white-space: nowrap; /* Prevent breaking for navigation items */
-}
-
-header nav a:hover {
-    background-color: #555;
-    border-radius: 4px;
-    text-decoration: none;
-}
-
-.search-form {
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    margin: 10px 0; /* Add some margin for spacing */
+    flex-wrap: wrap;
 }
 
-.search-form input[type="text"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px 0 0 4px;
-    outline: none;
+header nav ul li {
+    margin-right: 20px;
 }
 
-.search-form button {
+header nav ul li:last-child {
+    margin-right: 0;
+}
+
+header nav ul li a {
+    color: var(--white);
     padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: 1px solid #007bff;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.search-form button:hover {
-    background-color: #0056b3;
+header nav ul li a:hover {
+    background-color: var(--gray-dark);
+    color: var(--white);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header h1 a {
+    color: var(--white);
+    font-weight: bold;
 }
 
 .auth-links {
     display: flex;
-    gap: 10px; /* Space between auth links */
     align-items: center;
+    gap: 10px; /* Space between auth links */
     margin-left: auto; /* Push auth links to the right */
-    flex-wrap: wrap;
 }
 
-.auth-links span {
-    color: #eee;
-    padding: 0.5rem 1rem;
+.auth-links .btn {
+    padding: 5px 9px; /* Made even smaller */
+    border-radius: 5px;
+    background-color: transparent;
+    color: var(--white);
+    border: 1px solid var(--white);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Forms (General) */
+.auth-links .btn:hover {
+    background-color: var(--scarlet);
+    border-color: var(--scarlet);
+    color: var(--white);
+}
+
+.auth-links form {
+    display: inline-block; /* Keep form elements inline */
+}
+
+.auth-links button.btn {
+    background-color: var(--scarlet);
+    border: none; /* Removed the border */
+    color: var(--white);
+    cursor: pointer;
+    padding: 5px 9px; /* Made even smaller */
+    font-size: 0.8em; /* Made even smaller */
+}
+
+.auth-links button.btn:hover {
+    background-color: #A00F2E; /* Darken scarlet on hover */
+    border-color: #A00F2E; /* Keep border-color consistent with background */
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 7px 11px; /* Made smaller */
+    margin: 5px 0;
+    background-color: var(--scarlet);
+    color: var(--white) !important; /* !important to override default link color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em; /* Made smaller */
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #A00F2E; /* Slightly darker scarlet */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background-color: var(--scarlet);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: #A00F2E;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap red for danger */
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-secondary {
+    background-color: var(--gray-medium);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-outline-info {
+    background-color: transparent;
+    color: var(--scarlet);
+    border: 1px solid var(--scarlet);
+}
+
+.btn-outline-info:hover {
+    background-color: var(--scarlet);
+    color: var(--white);
+}
+
+
+/* --- Content Sections --- */
+.content-section {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid var(--gray-light);
+}
+
+/* --- Post List Styles --- */
+.post {
+    background-color: var(--white);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-light);
+}
+
+.post h2 a {
+    color: var(--black); /* Post title link color */
+    font-size: 1.8em;
+    font-weight: bold;
+    padding: 0; /* Remove button padding for h2 link */
+    background-color: transparent; /* Remove button background for h2 link */
+    text-align: left;
+}
+
+.post h2 a:hover {
+    color: var(--scarlet);
+    text-decoration: underline;
+    transform: none; /* Remove button hover transform */
+    box-shadow: none; /* Remove button hover shadow */
+}
+
+.post-meta {
+    color: var(--gray-medium);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-tags, .post-tags-list {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: var(--gray-medium);
+}
+
+.post-tags a, .post-tags-list a {
+    background-color: var(--gray-light);
+    color: var(--black);
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-right: 5px;
+    white-space: nowrap; /* Prevent tags from breaking */
+}
+
+.post-tags a:hover, .post-tags-list a:hover {
+    background-color: var(--scarlet);
+    color: var(--white);
+}
+
+/* --- Forms --- */
+form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-light);
+}
+
 form p {
     margin-bottom: 15px;
 }
@@ -113,56 +308,201 @@ form label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: var(--black);
 }
 
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
-form textarea,
-form input[type="file"] {
-    width: calc(100% - 22px); /* Account for padding and border */
+form textarea {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    margin-top: 5px;
-}
-
-/* Specific styles for TinyMCE generated textarea */
-/* TinyMCE will replace the textarea, but its styling helps if it fails */
-textarea {
-    min-height: 200px;
-    resize: vertical;
-}
-
-form button[type="submit"] {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
+    margin-bottom: 15px;
+    border: 1px solid var(--gray-light);
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
+    color: var(--black);
+    background-color: var(--white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form textarea:focus {
+    border-color: var(--scarlet);
+    box-shadow: 0 0 0 3px rgba(var(--scarlet), 0.2);
+    outline: none;
+}
+
+/* Crispy Forms adjustments */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-control { /* Crispy forms default input class */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray-light);
+    border-radius: 5px;
+    font-size: 1em;
+    color: var(--black);
+    background-color: var(--white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--scarlet);
+    box-shadow: 0 0 0 3px rgba(var(--scarlet), 0.2);
+    outline: none;
+}
+
+/* For TinyMCE integration (if used with crispy forms) */
+.django-tinymce-widget textarea {
+    min-height: 250px; /* Give more space for content editing */
+}
+
+/* --- Comments Section --- */
+.comments {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-light);
+}
+
+.comments h3 {
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: var(--black);
+}
+
+.comment {
+    background-color: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.comment p {
+    margin-bottom: 5px;
+}
+
+.comment-meta {
+    font-size: 0.85em;
+    color: var(--gray-medium);
+    margin-top: 10px;
+}
+
+.comment a {
+    font-size: 0.9em;
     margin-right: 10px;
-    transition: background-color 0.3s ease;
+    color: var(--scarlet);
 }
 
-form button[type="submit"]:hover {
-    background-color: #218838;
+.comment a:hover {
+    text-decoration: underline;
 }
 
-/* Message Styling (for success/error messages) */
-.messages {
+/* --- Dashboard Styles --- */
+.dashboard-posts, .dashboard-comments {
+    background-color: var(--white);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray-light);
+}
+
+.dashboard-posts h3, .dashboard-comments h3 {
+    color: var(--black);
+    border-bottom: 1px solid var(--gray-light);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.dashboard-posts ul, .dashboard-comments ul {
     list-style: none;
     padding: 0;
-    margin-bottom: 20px;
+}
+
+.dashboard-posts li, .dashboard-comments li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--gray-light);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-posts li:last-child, .dashboard-comments li:last-child {
+    border-bottom: none;
+}
+
+.dashboard-posts li a, .dashboard-comments li a {
+    color: var(--black);
+    font-weight: bold;
+}
+
+.dashboard-posts li a:hover, .dashboard-comments li a:hover {
+    color: var(--scarlet);
+}
+
+.dashboard-posts li small, .dashboard-comments li small {
+    color: var(--gray-medium);
+    font-size: 0.85em;
+}
+
+.edit-link, .delete-link {
+    font-size: 0.8em; /* Made smaller */
+    padding: 4px 8px; /* Made smaller */
+    border-radius: 3px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-link {
+    background-color: var(--scarlet);
+    color: var(--white) !important;
+}
+
+.edit-link:hover {
+    background-color: #A00F2E;
+}
+
+.delete-link {
+    background-color: var(--gray-medium);
+    color: var(--white) !important;
+}
+
+.delete-link:hover {
+    background-color: #5a6268;
+}
+
+/* --- Messages (Django's messages framework) --- */
+.messages {
+    list-style: none;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 960px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
 }
 
 .messages li {
-    padding: 10px;
     margin-bottom: 10px;
+    padding: 10px;
     border-radius: 5px;
-    font-weight: bold;
 }
 
 .messages .success {
@@ -177,251 +517,153 @@ form button[type="submit"]:hover {
     border: 1px solid #f5c6cb;
 }
 
-/* Post List Page */
-.post-preview {
-    background-color: #fff;
-    border: 1px solid #eee;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    overflow: hidden; /* Clear floats */
+.messages .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
 }
 
-.post-preview img {
-    margin-bottom: 15px; /* For image below text if float is not used */
-    border-radius: 4px;
+.messages .info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
 }
 
-.post-preview h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.post-meta {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-/* Post Detail Page */
-article {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.post-content {
-    margin-top: 20px;
-    font-size: 1.1em;
-}
-
-.post-content p {
-    margin-bottom: 1em;
-}
-
-/* Images within content (TinyMCE) */
-.post-content img {
-    max-width: 100%; /* Ensure images don't overflow */
-    height: auto;
-    display: block; /* Remove extra space below image */
-    margin: 15px auto; /* Center images */
-    border-radius: 4px;
-}
-
-
-/* Comments Section */
-.comments {
-    margin-top: 40px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-.comment {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-}
-
-.comment p {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.comment-meta {
-    font-size: 0.85em;
-    color: #777;
-}
-
-/* Pagination */
+/* --- Pagination --- */
 .pagination {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 30px;
-    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--gray-light);
 }
 
-.pagination a, .pagination .current-page {
+.step-links a, .current {
     display: inline-block;
-    padding: 8px 15px;
+    padding: 5px 10px; /* Made smaller */
     margin: 0 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #007bff;
-    text-decoration: none;
-}
-
-.pagination a:hover {
-    background-color: #e9e9e9;
-}
-
-.pagination .current-page {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-    cursor: default;
-}
-
-/* Post Actions (Edit/Delete buttons) */
-.post-actions, .dashboard-posts ul li {
-    margin-top: 20px;
-}
-
-.post-actions a,
-.dashboard-posts a,
-.dashboard-comments a {
-    display: inline-block;
-    margin-right: 10px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.9em;
-}
-
-.post-actions a.edit-link,
-.dashboard-posts a.edit-link,
-.dashboard-comments a.edit-link {
-    background-color: #ffc107;
-    color: #333;
-}
-
-.post-actions a.edit-link:hover,
-.dashboard-posts a.edit-link:hover,
-.dashboard-comments a.edit-link:hover {
-    background-color: #e0a800;
-}
-
-.post-actions a.delete-link,
-.dashboard-posts a.delete-link,
-.dashboard-comments a.delete-link {
-    background-color: #dc3545;
-    color: white;
-}
-
-.post-actions a.delete-link:hover,
-.dashboard-posts a.delete-link:hover,
-.dashboard-comments a.delete-link:hover {
-    background-color: #c82333;
-}
-
-.post-actions button,
-.dashboard-posts button {
-    background-color: #007bff;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-
-.post-actions button:hover,
-.dashboard-posts button:hover {
-    background-color: #0056b3;
-}
-
-
-/* Tag Styling */
-.post-tags, .post-tags-list {
-    font-size: 0.9em;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-.post-tags a, .post-tags-list a {
-    background-color: #e9ecef;
-    color: #333;
-    padding: 3px 8px;
-    border-radius: 12px;
-    margin-right: 5px;
-    white-space: nowrap;
-    transition: background-color 0.2s ease;
-}
-
-.post-tags a:hover, .post-tags-list a:hover {
-    background-color: #dee2e6;
-    text-decoration: none;
-}
-
-/* Dashboard Specifics */
-.dashboard-posts ul, .dashboard-comments ul {
-    list-style: none;
-    padding: 0;
-}
-
-.dashboard-posts li, .dashboard-comments li {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 10px 15px;
-    margin-bottom: 10px;
+    border: 1px solid var(--scarlet);
     border-radius: 5px;
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically align items */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    color: var(--scarlet);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dashboard-posts li a, .dashboard-comments li a {
-    margin-right: 10px;
+.step-links a:hover {
+    background-color: var(--scarlet);
+    color: var(--white);
 }
 
-.dashboard-posts li small, .dashboard-comments li small {
-    margin-left: auto; /* Push date to the right */
-    margin-right: 15px; /* Space between date and actions */
-    color: #777;
+.current {
+    background-color: var(--scarlet);
+    color: var(--white);
+    font-weight: bold;
 }
 
-/* Responsive Adjustments */
+/* --- Footer --- */
+footer {
+    background-color: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 3px solid var(--scarlet);
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* --- Search Form (Post List) --- */
+.post-list-search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.post-list-search-form input[type="text"] {
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
     header nav {
         flex-direction: column;
         align-items: flex-start;
     }
-    header nav a, .auth-links span {
+
+    header nav h1 {
+        margin-bottom: 10px;
         width: 100%;
-        text-align: left;
+        text-align: center;
     }
-    .search-form {
+
+    header nav ul {
         width: 100%;
         justify-content: center;
+        margin-bottom: 10px;
     }
+
+    header nav ul li {
+        margin: 0 10px 10px 0;
+    }
+
     .auth-links {
-        margin-left: 0;
         width: 100%;
         justify-content: center;
-        margin-top: 10px;
+        margin-left: 0;
     }
+
     main {
-        margin: 10px;
+        padding: 0 15px;
+    }
+
+    .post, .content-section, form, .comments, .dashboard-posts, .dashboard-comments, .pagination {
         padding: 15px;
     }
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="password"],
-    form textarea,
-    form input[type="file"] {
-        width: calc(100% - 20px); /* Adjust for smaller padding */
+
+    .post h2 a {
+        font-size: 1.5em;
+    }
+
+    .dashboard-posts li, .dashboard-comments li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-posts li a, .dashboard-comments li a {
+        margin-bottom: 5px;
+    }
+
+    .post-list-search-form {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
+
+@media (max-width: 480px) {
+    header nav ul li {
+        margin: 0 5px 10px 0;
+    }
+
+    .btn {
+        padding: 7px 11px; /* Consistent with main .btn */
+        font-size: 0.8em; /* Consistent with main .btn */
+    }
+
+    .step-links a, .current {
+        padding: 5px 9px; /* Consistent with new pagination size */
+        font-size: 0.85em; /* Adjusted for smaller pagination */
+    }
+}
+
+/* Helper for darkening colors (not native CSS, but for conceptual understanding) */
+/* In a real project, you'd use a CSS preprocessor like Sass/Less or define specific darker shades */
+/* For this example, I've manually calculated a slightly darker scarlet */
+/* function darken(color, percentage) { ... } */

@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
-
+{% load crispy_forms_tags %}
+{% load django_bootstrap5 %}
 {% block title %}Create Post{% endblock %}
 
 {% block content %}
@@ -12,9 +13,13 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        {{ form|crispy }}
 
-        <button type="submit">Save Post</button>
-        <a href="{% url 'blog:post_list' %}">Cancel</a>
+        {% if form.instance.pk %}
+            <input type="hidden" name="post_id" value="{{ form.instance.pk }}">
+        {% endif %}
+
+        <button type="submit" class='btn'>Save Post</button>
+        <a href="{% url 'blog:post_list' %}"class="btn">Cancel</a>
     </form>
 {% endblock %}

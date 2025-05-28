@@ -1,0 +1,34 @@
+
+{% extends "blog/base.html" %} {# Assuming you have a base.html in your blog app for layout #}
+{% load crispy_forms_tags %} {# Load crispy forms tags for rendering forms #}
+{%load static %} {# Load static files #}
+{% load django_bootstrap5 %} {# Load crispy forms for Bootstrap 5 #}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'users/css/register.css' %}"> {# Link to your custom CSS for registration #}
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %} {# Django security tag for forms #}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|crispy }} {# Render the form using crispy_forms_tags #}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block title %}
+    Register - My Awesome Blog
+{% endblock title %}

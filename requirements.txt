@@ -1,7 +1,11 @@
 asgiref==3.8.1
 certifi==2025.4.26
 charset-normalizer==3.4.2
+crispy-bootstrap5==2025.4
 Django==5.2.1
+django-allauth==65.8.1
+django-bootstrap5==25.1
+django-crispy-forms==2.4
 django-taggit==6.1.0
 django-tinymce==4.1.0
 docopt==0.6.2
