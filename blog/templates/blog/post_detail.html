@@ -1,5 +1,7 @@
 {# my_blog_project/blog/templates/blog/post_detail.html #}
 {% extends 'blog/base.html' %} {# Inherit from the base template #}
+{% load crispy_forms_tags %}
+{% load django_bootstrap5 %}
 
 {% block title %}{{ post.title }}{% endblock %} {# Set the title to the post title #}
 
@@ -54,7 +56,7 @@
                 {% if user.is_authenticated %}
                     <form action="{% url 'blog:comment_create' post.pk %}" method="post">
                         {% csrf_token %}
-                        {{ comment_form.as_p }}
+                        {{ comment_form|crispy }} {# Render the comment form using crispy forms #}
                         <button type="submit" class="btn">Post Comment</button>
                     </form>
                 {% else %}
