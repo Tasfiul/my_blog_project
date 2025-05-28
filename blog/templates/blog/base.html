@@ -17,18 +17,13 @@
         <nav>
             <ul>
                 <li><a href="{% url 'blog:post_list' %}"class="btn">Home</a></li> {# Link to the blog list #}
-                <li><a href="{% url 'blog:post_create' %}"class="btn">Create Post</a></li> {# Link to create a new post #}
+                <li><a href="{% url 'blog:post_create' %}"class="btn">Create Post</a></li>    {# Link to create a new post #}
             </ul>
         <h1><a href="{% url 'blog:post_list' %}">My Awesome Blog</a></h1> {# Link back to the blog list #}
         <div> {# Basic styling for auth links #}
             {% if user.is_authenticated %}
                 Hello, {{ user.username }}.
-                <form action="{% url 'account_logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn">
-                        Log Out
-                    </button>
-                </form>
+                <a href="{% url 'account_logout' %}" class="btn">Log Out</a> 
             {% else %}
                 <a href="{% url 'account_login' %}"class="btn">Log In</a> |
                 {# Optional: Link to a registration page if you add one #}

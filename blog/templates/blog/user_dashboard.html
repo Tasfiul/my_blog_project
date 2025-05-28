@@ -30,7 +30,7 @@
             <ul>
                 {% for comment in user_comments %}
                     <li>
-                        On <a href="{% url 'blog:post_detail' comment.post.pk %}">{{ comment.post.title }}</a>: "{{ comment.text|truncatechars:50 }}"
+                        On <a href="{% url 'blog:post_detail' comment.post.pk %}">{{ comment.post.title }}</a>: "{{ comment.content|truncatechars:50 }}"
                         - <small>({{ comment.created_date|date:"F d, Y" }})</small>
                         <a href="{% url 'blog:comment_update' comment.pk %}" class="edit-link">Edit</a>
                         <a href="{% url 'blog:comment_delete' comment.pk %}" class="delete-link">Delete</a>

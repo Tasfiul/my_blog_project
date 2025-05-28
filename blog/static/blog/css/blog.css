@@ -130,6 +130,7 @@ header h1 a {
     color: var(--white);
     border: 1px solid var(--white);
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    outline: none; /* ADDED: Remove outline on focus */
 }
 
 .auth-links .btn:hover {
@@ -149,6 +150,7 @@ header h1 a {
     cursor: pointer;
     padding: 5px 9px; /* Made even smaller */
     font-size: 0.8em; /* Made even smaller */
+    outline: none; /* ADDED: Remove outline on focus */
 }
 
 .auth-links button.btn:hover {
@@ -171,6 +173,7 @@ header h1 a {
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease;
     text-align: center;
+    outline: none; /* ADDED: Remove outline on focus */
 }
 
 .btn:hover {
