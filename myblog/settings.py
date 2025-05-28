@@ -25,9 +25,9 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com'] # Add both with and without www
+ALLOWED_HOSTS = ['tasfiulmostafa.pythonanywhere.com', 'www.tasfiulmostafa.pythonanywhere.com','localhost','127.0.0.1' ] # Add both with and without www
 
 
 # Application definition
@@ -182,7 +182,7 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True  # Log out user after password change
 # Email settings for Django Allauth
 # Use Gmail's SMTP server for sending emails
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')  
 EMAIL_PORT = int(os.getenv('EMAIL_PORT'))  
 EMAIL_USE_TLS = True

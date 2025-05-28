@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import PostForm, CommentForm, CommentUpdateForm
 from django.views import generic
-from django.db.models import Q # Import Q object for complex queries
+from django.db.models import Q , BooleanField , ExpressionWrapper, F, Value # Import Q object for complex queries
 from taggit.models import Tag # <--- ADD THIS IMPORT for Tag model
 from django.contrib import messages
 from allauth.account.decorators import verified_email_required # New import for allauth
@@ -140,11 +140,19 @@ class PostListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get('q')
+
+        queryset = queryset.annotate(
+            is_staff_or_admin=ExpressionWrapper(
+                Q(author__is_staff=True) | Q(author__is_superuser=True),
+                output_field=BooleanField()
+            )
+        )
+
         if query:
             queryset = queryset.filter(
                 Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query) | Q(author__username__icontains=query)
             ).distinct()  # Use distinct to avoid duplicates if a post has multiple tags
-        return queryset
+        return queryset.order_by('-is_staff_or_admin', '-pub_date')
 
 # View for displaying a single blog post and its comments
 class PostDetailView(DetailView):
